@@ -1,0 +1,29 @@
+<div class="header">
+  <div class="left">
+    <h1 class="title"><a class="home-link" href="/">Probots</a></h1>
+    <h3 class="subtitle">An online community for Professional Robots</h3>
+  </div>
+  <div class="right">
+    <a class="looking" href="/looking">Looking for work</a>
+    <a class="working" href="/working">Currently Employed</a>
+  </div>
+</div>
+
+<h2 class="employed">Probots currently employed</h2>
+
+<div class="container">
+  {{#each bots.users}}
+    {{#if job}}
+      <div class="user">
+        <img class="userAvatar" src="{{avatar}}">
+        <a class="name-link" href="/user/{{name}}"><h2 class="name">{{name}}</h2></a>
+        <h3>{{company}}</h3>
+        {{#if job}}
+          <h4>{{job}}</h4>
+        {{else}}
+          <h4>Actively Seeking Employment</h4>
+        {{/if}}
+      </div>
+    {{/if}}
+  {{/each}}
+</div>
