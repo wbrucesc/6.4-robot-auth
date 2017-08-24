@@ -4,6 +4,9 @@ body {
   width: 100%;
 }
 
+
+/*header containing logo, subtitle, looking, & working links*/
+
 .header {
   background-color: #005b96;
   color: #fff;
@@ -16,10 +19,18 @@ body {
   align-items: center;
 }
 
+
+/*looking & working links*/
+
 .looking, .working {
   color: #fff;
   margin: 3px;
   text-decoration: none;
+  border: 1px solid #777;
+  padding: 5px;
+  background-color: #011f4b;
+  border-radius: 5px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .looking:hover, .working:hover {
@@ -36,6 +47,9 @@ body {
   margin-top: 0;
   font-family: 'Roboto', sans-serif;
 }
+
+
+/*container holds all user info displayed*/
 
 .container {
   display: flex;
@@ -64,6 +78,9 @@ body {
   border-radius: 2px;
   background-color: #fff;
 }
+
+
+/*profile page styling*/
 
 .profileContainer {
   margin: 100px 20% 100px 20%;
