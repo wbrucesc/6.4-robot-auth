@@ -1,41 +1,93 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const data = require('./models/data');
-const routes = require('./router');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const passport = require('passport'),
+  LocalStrategy = require('passport-local').Strategy,
+  session = require('express-session'),
+  flash = require('express-flash-messages');
+
+const router = require('./routes');
+const User = require('./models/user');
+
 const app = express();
 
+const database = process.env.MONGODB_URI || 'mongodb://localhost:27017/test';
+mongoose.connect(database);
 
-const exphbs = require('express-handlebars');
+
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use('/static', express.static('public'));
 
+//Passport user auth config
+
+passport.use('local-login', new LocalStrategy(
+    function(username, password, done) {
+        User.authenticate(username, password, function(err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false, {
+                    message: "There is no user with that username and password."
+                });
+            }
+        });
+    }));
+
+    passport.use('local-signup', new LocalStrategy(
+      function(username, password, done){
+        User.signup(username, password, function(err, user){
+          if (err) {
+              return done(err);
+          }
+          if (user) {
+              return done(null, user);
+          } else {
+              return done(null, false, {
+                  message: "There is already a user with that username."
+              });
+          }
+        });
+      }
+    ));
+
+    passport.serializeUser(function(user, done) {   //tells passport how to track specific user
+        done(null, user.id);                        //with unique id
+    });
+
+    passport.deserializeUser(function(id, done) {
+        User.findById(id, function(err, user) {
+            done(err, user);
+        });
+    });
+
+    //Middleware
+
+    app.use(bodyParser.urlencoded({extended: false}));
+
+    app.use(session({
+        secret: 'keyboard cat',   //salt used to generate tokens
+        resave: false,
+        saveUninitialized: false,
+    }));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(flash());
+
+    //Router
+
+    router(app);
 
 
-routes(app);
-
-// app.get('/', (req, res) => {
-//   res.render('index', {bots: data});              //displays the user's info on index page
-// });
-
-// just commented out 2:23
-// app.get('/user/:name', (req, res) =>{
-//   let userName = req.params.name;                 //allows you to target a specific user by their name
-//   let targetUser;
-//   data.users.forEach((user) =>{
-//     if(user.name == userName){
-//       targetUser = user;
-//     }
-//   });
-//   res.render('profile', {user: targetUser});      //if name clicked renders profile with user info
-// });
-//
-// app.get('/request', (req, res) =>{                //renders request success page if connect button clicked
-//   res.render('request');
-// });
 
 
-
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Application is running on port 3000");
 });
 
