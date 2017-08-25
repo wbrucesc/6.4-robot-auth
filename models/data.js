@@ -5,7 +5,17 @@ const robotSchema = new mongoose.Schema({
   name: {type: String, required: true, unique: true},
   avatar: {},
   company: {},
-  job: {}
+  job: {},
+  university: {},
+  skills: [
+    {}
+  ],
+  address: {
+    city: {},
+    country: {}
+  },
+  email: {},
+  phone: {}
 });
 
 const Robot = mongoose.model('Robot', robotSchema);
