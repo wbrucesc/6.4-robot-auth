@@ -25,10 +25,14 @@ module.exports = function(app){
   }
 };
 
-  homeRouter.use(requireLogin);     //requires login before displaying home page 
+  homeRouter.use(requireLogin);     //requires login before displaying home page
   homeRouter.get('/', HomeController.index);
+  homeRouter.post('/', HomeController.add);
+  homeRouter.get('/add', HomeController.form);
+  homeRouter.get('/:id/edit', HomeController.form);
+  homeRouter.post('/:id', HomeController.edit);
 
-  //User routes
+  // User routes
   userRouter.get('/login', UserController.login);
   userRouter.post('/login', passport.authenticate('local-login', {
     successRedirect: '/',

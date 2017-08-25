@@ -1,9 +1,9 @@
-const Robot = require('../models/data');
+const User = require('../models/user');
 
 const WorkingController = {
   working: function(req, res) {
-    Robot.find().then(function(robots) {
-      res.render('working', {robots: robots});
+    User.find().then(function(users) {
+      res.render('working', {users: users});
     });
   }
 };
