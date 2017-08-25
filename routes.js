@@ -18,14 +18,14 @@ module.exports = function(app){
   const userRouter = express.Router();
 
   const requireLogin = function (req, res, next) {
-  if (req.user) {
+  if (req.user) {                   //checks to see if there is a user, if not redirect to login
     next();
   } else {
     res.redirect('/login');
   }
 };
 
-  homeRouter.use(requireLogin);
+  homeRouter.use(requireLogin);     //requires login before displaying home page 
   homeRouter.get('/', HomeController.index);
 
   //User routes

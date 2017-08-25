@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars');
 const data = require('./models/data');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const mongo = require('./mongoutils');
 const passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy,
   session = require('express-session'),
@@ -10,6 +11,7 @@ const passport = require('passport'),
 
 const router = require('./routes');
 const User = require('./models/user');
+const Robot = require('./models/data');
 
 const app = express();
 
