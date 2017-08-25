@@ -1,8 +1,10 @@
-const data = require('../models/data');
+const Robot = require('../models/data');
 
 const LookingController = {
   looking: function(req, res) {
-    res.render('looking', {bots: data});
+    Robot.find().then(function(robots){
+      res.render('looking', {robots: robots});
+    });
   }
 };
 
